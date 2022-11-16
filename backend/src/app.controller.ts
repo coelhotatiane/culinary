@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Post, Query, Body, HttpException, HttpCode, HttpStatus } from '@nestjs/common';
 import { AppService } from './app.service';
+import { InjectKnex, Knex } from 'nestjs-knex';
 
 interface Ingredient {
   id: number;
@@ -14,8 +15,8 @@ const ingredients: Ingredient[] = [
 ];
 
 interface Parameters {
-  acid: boolean;
-  alkaline: boolean;
+  acid: string;
+  alkaline: string;
 }
 
 // GET /api/ingredient/[id]
@@ -28,16 +29,26 @@ interface Parameters {
 
 @Controller('api/ingredients')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    @InjectKnex() private readonly knex: Knex
+  ) {}
 
   @Get('hello')
   getHello(): string {
     return this.appService.getHello();
   }
 
-  @Get('/:id')
-  getIngredientById(@Param() params): Object {
-    const ingredient = ingredients.filter(el => el.id == params.id);
+  @Get('/id/:id')
+  async getIngredientById(@Param() params): Promise<Object> {
+    const ingredients = await this.knex.table('ingredients').where('id', params.id);
+    console.log('ingredient: ', ingredients[0]);
+    return ingredients[0];
+  }
+
+  @Get('/name/:name')
+  getIngredientByName(@Param() params): Object {
+    const ingredient = ingredients.filter(el => el.name == params.name);
     console.log('ingredient: ', ingredient);
     return ingredient;
   }
@@ -46,10 +57,10 @@ export class AppController {
   getIngredientByPh(@Query() params: Parameters) {
     console.log(params);
     let result = [];
-    if(params.acid) {
+    if(params.acid === 'true') {
       result.push(ingredients.filter(el => el.ph < 7));
     }
-    if(params.alkaline) {
+    if(params.alkaline === 'true') {
       result.push(ingredients.filter(el => el.ph > 7));
     }
     return result;

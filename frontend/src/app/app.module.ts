@@ -12,6 +12,7 @@ import { IngredientsListComponent } from './ingredients-list/ingredients-list.co
 import { InputIngredientComponent } from './input-ingredient/input-ingredient.component';
 import { LogoComponent } from './logo/logo.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     MatIconModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
