@@ -1,6 +1,5 @@
 import { Controller, Get, Param, Post, Query, Body, HttpException, HttpCode, HttpStatus } from '@nestjs/common';
 import { AppService } from './app.service';
-import { InjectKnex, Knex } from 'nestjs-knex';
 
 interface Ingredient {
   id: number;
@@ -17,6 +16,7 @@ const ingredients: Ingredient[] = [
 interface Parameters {
   acid: string;
   alkaline: string;
+  name: string;
 }
 
 // GET /api/ingredient/[id]
@@ -30,8 +30,7 @@ interface Parameters {
 @Controller('api/ingredients')
 export class AppController {
   constructor(
-    private readonly appService: AppService,
-    @InjectKnex() private readonly knex: Knex
+    private readonly appService: AppService
   ) {}
 
   @Get('hello')
@@ -39,22 +38,22 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('/id/:id')
+  @Get('/:id')
   async getIngredientById(@Param() params): Promise<Object> {
-    const ingredients = await this.knex.table('ingredients').where('id', params.id);
+    const ingredients = await this.appService.getIngredientById(params.id);
     console.log('ingredient: ', ingredients[0]);
     return ingredients[0];
   }
 
-  @Get('/name/:name')
-  getIngredientByName(@Param() params): Object {
-    const ingredient = ingredients.filter(el => el.name == params.name);
-    console.log('ingredient: ', ingredient);
-    return ingredient;
+  @Get('/:id/matches')
+  async getMatches(@Param() params): Promise<Object> {
+    const ingredients = await this.appService.getIngredientById(params.id);
+    console.log('ingredient: ', ingredients[0]);
+    return ingredients[0];
   }
 
   @Get()
-  getIngredientByPh(@Query() params: Parameters) {
+  async getIngredientByPh(@Query() params: Parameters) {
     console.log(params);
     let result = [];
     if(params.acid === 'true') {
@@ -63,8 +62,12 @@ export class AppController {
     if(params.alkaline === 'true') {
       result.push(ingredients.filter(el => el.ph > 7));
     }
+    if(params.name) {
+      result = await this.appService.getIngredientByName(params.name);
+    }
     return result;
   }
+
 
   @Post()
   addNewIngredient(@Body() ingredientInfo: Ingredient) {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { map, mergeMap } from 'rxjs';
 import { HttpCallsService } from '../http-calls.service';
 
 @Component({
@@ -24,6 +25,14 @@ export class InputIngredientComponent implements OnInit {
     });
     console.log(ingredientPh);
     return ingredientPh;
+  }
+
+  getMatches() {
+    const name = this.inputFormControl.value || '';
+    this.httpCall.getIngredientByName(name).pipe(
+      mergeMap(response => this.httpCall.getMatches(response[0].id))
+    )
+    .subscribe(response => { console.log(response) });
   }
 
   findMatchListBypH() {
