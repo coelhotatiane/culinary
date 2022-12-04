@@ -13,13 +13,15 @@ import { InputIngredientComponent } from './input-ingredient/input-ingredient.co
 import { LogoComponent } from './logo/logo.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MatchesListComponent } from './matches-list/matches-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IngredientsListComponent,
     InputIngredientComponent,
-    LogoComponent
+    LogoComponent,
+    MatchesListComponent
   ],
   imports: [
     BrowserModule,

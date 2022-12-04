@@ -3,28 +3,28 @@ import { FormControl } from '@angular/forms';
 import { map, mergeMap } from 'rxjs';
 import { HttpCallsService } from '../http-calls.service';
 
+interface Ingredient {
+  id: number;
+  name: string;
+  ph: number;
+}
+
 @Component({
   selector: 'app-input-ingredient',
   templateUrl: './input-ingredient.component.html',
   styleUrls: ['./input-ingredient.component.scss']
 })
+
 export class InputIngredientComponent implements OnInit {
 
+  //matches: Ingredient[] = [];
+  treatedData: Ingredient[] = [];
+  matches: string = '';
+  showMatches = false;
   inputFormControl = new FormControl('', []);
   constructor(private httpCall: HttpCallsService) { }
 
   ngOnInit(): void {
-  }
-
-  getIngredientpH(name: string) {
-    let ingredientPh;
-    this.httpCall.getIngredientByName(name).subscribe(response => {
-      ingredientPh = response;
-      console.log(ingredientPh);
-      console.log(response);
-    });
-    console.log(ingredientPh);
-    return ingredientPh;
   }
 
   getMatches() {
@@ -32,20 +32,16 @@ export class InputIngredientComponent implements OnInit {
     this.httpCall.getIngredientByName(name).pipe(
       mergeMap(response => this.httpCall.getMatches(response[0].id))
     )
-    .subscribe(response => { console.log(response) });
+    .subscribe(response => {
+      console.log('MATCHES: ', response);
+      this.treatedData = response.map(ingredient => {
+        return {
+          id: ingredient.id,
+          name: ingredient.name,
+          ph: ingredient.ph
+      }
+      });
+      this.matches = JSON.stringify(this.treatedData);
+      this.showMatches = true });
   }
-
-  findMatchListBypH() {
-    const inputValue = this.inputFormControl.value || '';
-    const ph = this.getIngredientpH('Cenoura');
-    //const ingredientsList = this.getIngredientsListBypH(ph);
-  }
-
-  getIngredientsListBypH(ph: number) {
-    const alkaline = true;
-    const acid = false;
-    //phClassification >= 7 ? acid = true : alkaline = true;
-    this.httpCall.getIngredientsBypH(acid, alkaline).subscribe(response => console.log(response));
-  }
-
 }

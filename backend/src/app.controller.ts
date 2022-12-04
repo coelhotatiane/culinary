@@ -45,12 +45,30 @@ export class AppController {
     return ingredients[0];
   }
 
+  // @Get('/:id/matches')
+  // async getMatches(@Param() params): Promise<Object> {
+  //   const ingredients = await this.appService.getIngredientById(params.id);
+  //   console.log('ingredient: ', ingredients[0]);
+  //   return ingredients[0];
+  // }
+
   @Get('/:id/matches')
   async getMatches(@Param() params): Promise<Object> {
-    const ingredients = await this.appService.getIngredientById(params.id);
-    console.log('ingredient: ', ingredients[0]);
-    return ingredients[0];
+    const ingredient = await this.appService.getIngredientById(params.id);
+    const ph = ingredient[0].ph;
+    let phMin;
+    let phMax;
+    if(ph > 7) {
+      phMin = 0;
+      phMax = 6.9;
+    } else {
+      phMin = 7;
+      phMax = 14
+    }
+    const matches = await this.appService.getIngredientsBypHCategory(phMin, phMax);
+    return matches;
   }
+
 
   @Get()
   async getIngredientByPh(@Query() params: Parameters) {

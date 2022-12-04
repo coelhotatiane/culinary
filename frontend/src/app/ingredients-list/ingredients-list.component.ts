@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 export interface PeriodicElement {
   name: string;
@@ -27,7 +27,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class IngredientsListComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'name', 'ph'];
-  dataSource = ELEMENT_DATA;
+  @Input() dataSource = ELEMENT_DATA;
 
   constructor() { }
 

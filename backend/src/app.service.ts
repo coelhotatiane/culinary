@@ -16,8 +16,8 @@ export class AppService {
   getIngredientByName(name: string) {
     return this.knex.table('ingredients').where('name', name);
   }
-  getIngredientsBypHCategory(id: string): Promise<Object> {
-    return this.knex.table('ingredients').where('id', id);
+  getIngredientsBypHCategory(phMin: number, phMax: number): Promise<Object> {
+    return this.knex.table('ingredients').where('ph', '>', phMin).andWhere('ph', '<', phMax);
   }
 
 }
