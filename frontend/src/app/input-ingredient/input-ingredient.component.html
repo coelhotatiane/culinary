@@ -6,6 +6,6 @@
 
 <button mat-raised-button (click)="getMatches()">Match</button>
 
-<ng-template [ngIf]="showMatches">
+<div class="separator"></div>
 
-</ng-template>
+<app-ingredients-list [dataSource]="treatedData"></app-ingredients-list>

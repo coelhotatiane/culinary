@@ -2,12 +2,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  .input-cmp {
+    width: 80%;
+  }
 }
 
-.input-cmp {
-  width: 80%;
-}
-
-.image-logo {
-  width: 10%;
+.header {
+  height: 20%;
+  display: flex;
+  justify-content: space-between;
+  .menu {
+    align-self: center;
+  }
 }

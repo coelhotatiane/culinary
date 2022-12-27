@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { AppComponent } from './app.component';
 import { IngredientsListComponent } from './ingredients-list/ingredients-list.component';
@@ -14,6 +15,8 @@ import { LogoComponent } from './logo/logo.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatchesListComponent } from './matches-list/matches-list.component';
+import { RouterModule } from '@angular/router';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,8 @@ import { MatchesListComponent } from './matches-list/matches-list.component';
     IngredientsListComponent,
     InputIngredientComponent,
     LogoComponent,
-    MatchesListComponent
+    MatchesListComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +37,9 @@ import { MatchesListComponent } from './matches-list/matches-list.component';
     MatButtonModule,
     ReactiveFormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

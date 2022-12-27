@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, mergeMap } from 'rxjs';
 import { HttpCallsService } from '../http-calls.service';
+import { Router } from '@angular/router';
 
 interface Ingredient {
   id: number;
@@ -22,7 +23,8 @@ export class InputIngredientComponent implements OnInit {
   matches: string = '';
   showMatches = false;
   inputFormControl = new FormControl('', []);
-  constructor(private httpCall: HttpCallsService) { }
+  constructor(private httpCall: HttpCallsService,
+              private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -42,6 +44,8 @@ export class InputIngredientComponent implements OnInit {
       }
       });
       this.matches = JSON.stringify(this.treatedData);
-      this.showMatches = true });
+      this.router.navigate(['/matches-list']);
+      console.log('navegou?');
+    });
   }
 }
