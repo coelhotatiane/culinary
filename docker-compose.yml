@@ -8,9 +8,9 @@ services:
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: postgres
     volumes:
-      - 4978bbfd323cb4cc2ea87d496802973a8aba91303a08a548cdace2edc515f3bf:/var/lib/postgresql/data
+      - culinary-data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5431:5432"
 
   culinary-backend:
     build:
@@ -37,5 +37,4 @@ services:
       - "8080:8080"
 
 volumes:
-  4978bbfd323cb4cc2ea87d496802973a8aba91303a08a548cdace2edc515f3bf:
-    external: true
+  culinary-data:
